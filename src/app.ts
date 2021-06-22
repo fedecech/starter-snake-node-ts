@@ -9,6 +9,7 @@ const app = express();
 
 app.use(json());
 
+
 app.use(baseRouter);
 app.use(startRouter);
 app.use(moveRouter);
