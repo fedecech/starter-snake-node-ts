@@ -2,8 +2,7 @@ import { Router } from 'express';
 
 const router = Router();
 
-router.get('/', (req, res) => {
-	console.log(req);
+router.get('/', (_, res) => {
 	var battlesnakeInfo = {
 		apiversion: '1',
 		author: 'fedecech',
