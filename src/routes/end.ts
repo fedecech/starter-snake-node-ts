@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 const router = Router();
 
-router.get('/end', (_, res) => {
+router.post('/end', (_, res) => {
 	// const gameData = req.body;
 
 	console.log('END');
