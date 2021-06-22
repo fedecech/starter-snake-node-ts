@@ -1,11 +1,12 @@
-import { Router } from 'express';
+import { Router, Request, Response} from 'express';
+import {GameData} from '../entities/gameData';
 
 const router = Router();
 
-router.post('/end', (_, res) => {
-	// const gameData = req.body;
+router.post('/end', (req: Request, res: Response) => {
+	const gameData = req.body as GameData;
 
-	console.log('END');
+	console.log("/end", gameData)
 	res.status(200).send('ok');
 });
 

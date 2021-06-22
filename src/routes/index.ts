@@ -1,9 +1,10 @@
-import { Router } from 'express';
-
+import { Router, Request, Response} from 'express';
+import {BattleSnakeInfo} from '../entities/battlesnakeInfo'
 const router = Router();
 
-router.get('/', (_, res) => {
-	var battlesnakeInfo = {
+// route used to get info about the snakes before the game starts
+router.get('/', (_: Request, res: Response) => {
+	const battlesnakeInfo: BattleSnakeInfo = {
 		apiversion: '1',
 		author: 'fedecech',
 		color: '#ffcc00',
