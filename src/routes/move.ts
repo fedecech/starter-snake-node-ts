@@ -39,7 +39,7 @@ router.post('/move', (req: Request, res: Response) => {
 		}
 	});
 	const move = next_move(head, next_food, matrix);
-
+	console.log(move);
 	res.status(200).send({
 		move,
 	});
