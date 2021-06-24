@@ -32,17 +32,19 @@ export class Converter {
 		const { width, height } = gd.board;
 		const walls = this.getWalls();
 
+		console.log('Walls', walls);
 		let matrix: number[][] = [];
 
-		for (let row = height - 1; row < height; row++) {
+		for (let row = 0; row < height; row++) {
+			matrix[row] = [];
 			for (let col = 0; col < width; col++) {
 				const cord = { x: col, y: row };
-				if (walls.indexOf(cord) === -1) {
+				if (!walls.some((w) => w.x === cord.x && w.y === cord.y)) {
 					//walkable
-					matrix[row][col] == 0;
+					matrix[row][col] = 0;
 				} else {
 					//not walkable
-					matrix[row][col] == 1;
+					matrix[row][col] = 1;
 				}
 			}
 		}
@@ -50,19 +52,24 @@ export class Converter {
 	}
 
 	private getWalls() {
-		const { snakes } = this.gameData.board;
-		const { body, head } = this.gameData.you;
+		const { snakes, height } = this.gameData.board;
+		const { id } = this.gameData.you;
 
 		let walls: Coordinates[] = [];
 
-		walls.concat(body);
-		walls.push(head);
 		snakes.forEach((s) => {
 			const { head, body } = s;
-			walls.push(head);
 			walls.concat(body);
+
+			// add only head of other snakes to walls
+			if (s.id !== id) {
+				walls.push(head);
+			}
 		});
 
+		for (let i = 0; i < walls.length; i++) {
+			walls[i] = this.toTopBottomIndexed(walls[i], height);
+		}
 		return walls;
 	}
 

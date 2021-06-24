@@ -1,15 +1,21 @@
-import { AStarFinder } from './../finders/astar-finder';
-import { Heuristic } from 'src/core/Heuristic';
+// import { AStarFinder } from './../finders/astar-finder';
+import { Heuristic } from '../core/Heuristic';
 import { Coordinates } from '../interfaces/gameData';
 import { Router, Request, Response } from 'express';
 import { GameData } from '../interfaces/gameData';
 import { Converter } from '../core/Converter';
+import { AStarFinder } from '../finders/astar-finder';
 
 const router = Router();
 
-const possibleMoves = ['up', 'down', 'left', 'right'];
+enum PossibleMoves {
+	UP = 'up',
+	DOWN = 'down',
+	LEFT = 'left',
+	RIGHT = 'right',
+}
 
-const next_move = (s: Coordinates, e: Coordinates, matrix: number[][]) => {
+const next_path = (s: Coordinates, e: Coordinates, matrix: number[][]) => {
 	return new AStarFinder({
 		grid: {
 			matrix,
@@ -20,6 +26,29 @@ const next_move = (s: Coordinates, e: Coordinates, matrix: number[][]) => {
 	}).findPath(s, e);
 };
 
+const next_move = (path: number[][], head: Coordinates) => {
+	const step = path[0];
+	const x = step[0];
+	const y = step[1];
+
+	if (x < head.x) {
+		return PossibleMoves.LEFT;
+	} else if (x > head.x) {
+		return PossibleMoves.RIGHT;
+	} else if (y > head.y) {
+		return PossibleMoves.DOWN;
+	} else {
+		return PossibleMoves.UP;
+	}
+};
+
+const logs = (gameData: GameData, matrix: number[][], food: Coordinates[]) => {
+	console.log('Game Id: ', gameData.game.id);
+	console.log('Turn ', gameData.turn);
+	console.log('Board: ', matrix);
+	console.log('Food', food);
+};
+
 router.post('/move', (req: Request, res: Response) => {
 	const gameData = req.body as GameData;
 
@@ -27,6 +56,8 @@ router.post('/move', (req: Request, res: Response) => {
 	const matrix = converter.getMatrix();
 	const food = converter.getFood();
 	const head = converter.getMySnakeHead();
+
+	logs(gameData, matrix, food);
 
 	let min_distance = Heuristic.calculateHeuristic('Manhatten', head, food[0]);
 	let next_food = food[0];
@@ -38,8 +69,12 @@ router.post('/move', (req: Request, res: Response) => {
 			next_food = f;
 		}
 	});
-	const move = next_move(head, next_food, matrix);
-	console.log(move);
+	console.log('head', head);
+	const path = next_path(head, next_food, matrix);
+	const move = next_move(path, head);
+
+	console.log('Next food ', next_food);
+	console.log('Path to next food', move);
 	res.status(200).send({
 		move,
 	});
