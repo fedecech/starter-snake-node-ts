@@ -1,10 +1,10 @@
 import { minBy, remove } from 'lodash';
 
 import { backtrace } from '../core/util';
-import { Grid } from '../core/grid';
+import { Grid } from '../core/Grid';
 import { IAStarFinderConstructor } from '../interfaces/astar';
 import { Coordinates } from '../interfaces/gameData';
-import { Node } from '../core/node';
+import { Node } from '../core/Node';
 import { HeuristicFN, Heuristic } from '../core/Heuristic';
 
 export class AStarFinder {

@@ -1,4 +1,4 @@
-import { Node } from './node';
+import { Node } from './Node';
 
 /**
  * Backtrace from end node through parents and return the path.
