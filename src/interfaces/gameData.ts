@@ -4,18 +4,18 @@ export interface GameData {
 	board: Board;
 	you: Snake;
 }
-interface Game {
+export interface Game {
 	id: string;
 	ruleset: RuleSet;
 	timeout: number;
 }
 
-interface RuleSet {
+export interface RuleSet {
 	name: string;
 	version: string;
 }
 
-interface Board {
+export interface Board {
 	height: number;
 	width: number;
 	snakes: [Snake];
@@ -23,7 +23,7 @@ interface Board {
 	hazards: [];
 }
 
-interface Snake {
+export interface Snake {
 	id: string;
 	latency: string;
 	health: number;
@@ -33,7 +33,7 @@ interface Snake {
 	shout: string;
 }
 
-interface Coordinates {
+export interface Coordinates {
 	x: number;
 	y: number;
 }

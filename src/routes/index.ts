@@ -1,5 +1,5 @@
-import { Router, Request, Response} from 'express';
-import {BattleSnakeInfo} from '../entities/battlesnakeInfo'
+import { Router, Request, Response } from 'express';
+import { BattleSnakeInfo } from '../interfaces/battlesnakeInfo';
 const router = Router();
 
 // route used to get info about the snakes before the game starts
