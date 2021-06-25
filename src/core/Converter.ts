@@ -32,7 +32,6 @@ export class Converter {
 		const { width, height } = gd.board;
 		const walls = this.getWalls();
 
-		console.log('Walls', walls);
 		let matrix: number[][] = [];
 
 		for (let row = 0; row < height; row++) {
@@ -54,17 +53,17 @@ export class Converter {
 	private getWalls() {
 		const { snakes, height } = this.gameData.board;
 		const { id } = this.gameData.you;
-
 		let walls: Coordinates[] = [];
 
 		snakes.forEach((s) => {
-			const { head, body } = s;
-			walls.concat(body);
-
-			// add only head of other snakes to walls
-			if (s.id !== id) {
-				walls.push(head);
+			const { head } = s;
+			let body = s.body;
+			// filter head from body if its my snake
+			if (s.id === id) {
+				body = body.filter((s) => s.x != head.x || s.y != head.y);
 			}
+
+			walls = walls.concat(body);
 		});
 
 		for (let i = 0; i < walls.length; i++) {

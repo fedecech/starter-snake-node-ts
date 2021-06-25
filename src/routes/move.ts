@@ -27,6 +27,7 @@ const next_path = (s: Coordinates, e: Coordinates, matrix: number[][]) => {
 };
 
 const next_move = (path: number[][], head: Coordinates) => {
+	if (path.length < 1) return PossibleMoves.DOWN;
 	const step = path[0];
 	const x = step[0];
 	const y = step[1];
@@ -60,7 +61,8 @@ router.post('/move', (req: Request, res: Response) => {
 	logs(gameData, matrix, food);
 
 	let min_distance = Heuristic.calculateHeuristic('Manhatten', head, food[0]);
-	let next_food = food[0];
+	let next_food = food.length > 0 ? food[0] : null;
+
 	food.forEach((f) => {
 		const distance = Heuristic.calculateHeuristic('Manhatten', head, f);
 
@@ -69,12 +71,14 @@ router.post('/move', (req: Request, res: Response) => {
 			next_food = f;
 		}
 	});
-	console.log('head', head);
+
 	const path = next_path(head, next_food, matrix);
 	const move = next_move(path, head);
 
+	console.log('Head', head);
 	console.log('Next food ', next_food);
-	console.log('Path to next food', move);
+	console.log('Path to next food', path);
+	console.log('Move to next food', move);
 	res.status(200).send({
 		move,
 	});

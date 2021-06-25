@@ -19,7 +19,7 @@ export interface Board {
 	height: number;
 	width: number;
 	snakes: [Snake];
-	food: [Coordinates];
+	food: Coordinates[];
 	hazards: [];
 }
 
@@ -27,7 +27,7 @@ export interface Snake {
 	id: string;
 	latency: string;
 	health: number;
-	body: [Coordinates];
+	body: Coordinates[];
 	head: Coordinates;
 	length: number;
 	shout: string;
