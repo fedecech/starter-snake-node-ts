@@ -26,8 +26,35 @@ const next_path = (s: Coordinates, e: Coordinates, matrix: number[][]) => {
 	}).findPath(s, e);
 };
 
-const next_move = (path: number[][], head: Coordinates) => {
-	if (path.length < 1) return PossibleMoves.DOWN;
+const next_clear_step = (head: Coordinates, walls: Coordinates[]) => {
+	const up = { x: head.x - 1, y: head.y, direction: PossibleMoves.UP };
+	const dw = { x: head.x + 1, y: head.y, direction: PossibleMoves.DOWN };
+	const lt = { x: head.x, y: head.y - 1, direction: PossibleMoves.LEFT };
+	const rt = { x: head.x - 1, y: head.y + 1, direction: PossibleMoves.RIGHT };
+	const dirs = [up, dw, lt, rt];
+
+	walls.forEach((w) => {
+		if (w.x === up.x && w.y === up.y) {
+			dirs.splice(dirs.indexOf(up));
+		} else if (w.x === dw.x && w.y === dw.y) {
+			dirs.splice(dirs.indexOf(dw));
+		} else if (w.x === lt.x && w.y === lt.y) {
+			dirs.splice(dirs.indexOf(lt));
+		} else if (w.x === rt.x && w.y === rt.y) {
+			dirs.splice(dirs.indexOf(rt));
+		}
+	});
+
+	return dirs.length > 0 ? dirs[0].direction : PossibleMoves.LEFT; // all 4 ways (up, left, right, down) have walls
+};
+const next_move = (
+	path: number[][],
+	head: Coordinates,
+	walls: Coordinates[]
+) => {
+	if (path.length < 1) {
+		return next_clear_step(head, walls);
+	}
 	const step = path[0];
 	const x = step[0];
 	const y = step[1];
@@ -57,6 +84,7 @@ router.post('/move', (req: Request, res: Response) => {
 	const matrix = converter.getMatrix();
 	const food = converter.getFood();
 	const head = converter.getMySnakeHead();
+	const walls = converter.getWalls(); // change beacuse is doing usless calcs ? maybe store walls in instace var
 
 	logs(gameData, matrix, food);
 
@@ -73,7 +101,7 @@ router.post('/move', (req: Request, res: Response) => {
 	});
 
 	const path = next_path(head, next_food, matrix);
-	const move = next_move(path, head);
+	const move = next_move(path, head, walls);
 
 	console.log('Head', head);
 	console.log('Next food ', next_food);

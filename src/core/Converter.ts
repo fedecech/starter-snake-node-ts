@@ -50,7 +50,7 @@ export class Converter {
 		return matrix;
 	}
 
-	private getWalls() {
+	public getWalls() {
 		const { snakes, height } = this.gameData.board;
 		const { id } = this.gameData.you;
 		let walls: Coordinates[] = [];
