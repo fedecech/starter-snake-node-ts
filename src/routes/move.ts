@@ -60,7 +60,7 @@ router.post('/move', (req: Request, res: Response) => {
 
 	logs(gameData, matrix, food);
 
-	let min_distance = Heuristic.calculateHeuristic('Manhatten', head, food[0]);
+	let min_distance = 100; // because max is 19x19 grid
 	let next_food = food.length > 0 ? food[0] : null;
 
 	food.forEach((f) => {

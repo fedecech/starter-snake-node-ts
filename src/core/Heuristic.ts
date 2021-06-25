@@ -24,18 +24,22 @@ export class Heuristic {
 	}
 
 	private static manhatten(dx: number, dy: number, weight?: number) {
-		return (dx + dy) * weight;
+		return weight ? (dx + dy) * weight : dx + dy;
 	}
 
 	private static euclidean(dx: number, dy: number, weight?: number) {
-		return Math.sqrt(dx * dx + dy * dy) * weight;
+		return weight
+			? Math.sqrt(dx * dx + dy * dy) * weight
+			: Math.sqrt(dx * dx + dy * dy);
 	}
 
 	private static octile(dx: number, dy: number, weight?: number) {
-		return (dx + dy - 0.58 * Math.min(dx, dy)) * weight;
+		return weight
+			? (dx + dy - 0.58 * Math.min(dx, dy)) * weight
+			: dx + dy - 0.58 * Math.min(dx, dy);
 	}
 
 	private static chebyshev(dx: number, dy: number, weight?: number) {
-		return Math.max(dx, dy) * weight;
+		return weight ? Math.max(dx, dy) * weight : Math.max(dx, dy);
 	}
 }
