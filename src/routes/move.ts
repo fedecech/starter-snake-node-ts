@@ -26,12 +26,20 @@ const next_path = (s: Coordinates, e: Coordinates, matrix: number[][]) => {
 	}).findPath(s, e);
 };
 
-const next_clear_step = (head: Coordinates, walls: Coordinates[]) => {
+const next_clear_step = (
+	head: Coordinates,
+	walls: Coordinates[],
+	width: number,
+	height: number
+) => {
 	const up = { x: head.x - 1, y: head.y, direction: PossibleMoves.UP };
 	const dw = { x: head.x + 1, y: head.y, direction: PossibleMoves.DOWN };
 	const lt = { x: head.x, y: head.y - 1, direction: PossibleMoves.LEFT };
 	const rt = { x: head.x - 1, y: head.y + 1, direction: PossibleMoves.RIGHT };
-	const dirs = [up, dw, lt, rt];
+	let dirs = [up, dw, lt, rt];
+
+	// remove directions were there are external walls
+	dirs = dirs.filter((d) => d.x < width - 1 && d.y < height - 1);
 
 	walls.forEach((w) => {
 		if (w.x === up.x && w.y === up.y) {
@@ -50,10 +58,12 @@ const next_clear_step = (head: Coordinates, walls: Coordinates[]) => {
 const next_move = (
 	path: number[][],
 	head: Coordinates,
-	walls: Coordinates[]
+	walls: Coordinates[],
+	width: number,
+	height: number
 ) => {
 	if (path.length < 1) {
-		return next_clear_step(head, walls);
+		return next_clear_step(head, walls, width, height);
 	}
 	const step = path[0];
 	const x = step[0];
@@ -80,6 +90,7 @@ const logs = (gameData: GameData, matrix: number[][], food: Coordinates[]) => {
 router.post('/move', (req: Request, res: Response) => {
 	const gameData = req.body as GameData;
 
+	const { width, height } = gameData.board;
 	const converter = new Converter(gameData);
 	const matrix = converter.getMatrix();
 	const food = converter.getFood();
@@ -101,7 +112,7 @@ router.post('/move', (req: Request, res: Response) => {
 	});
 
 	const path = next_path(head, next_food, matrix);
-	const move = next_move(path, head, walls);
+	const move = next_move(path, head, walls, width, height);
 
 	console.log('Head', head);
 	console.log('Next food ', next_food);
