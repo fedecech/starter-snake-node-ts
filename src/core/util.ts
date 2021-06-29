@@ -79,6 +79,7 @@ const next_clear_step = (
 
 	// remove directions were there are external walls
 	dirs = dirs.filter((d) => d.x < width && d.y < height);
+	console.log('DIRS: ', dirs);
 
 	walls.forEach((w) => {
 		if (w.x === up.x && w.y === up.y) {
@@ -91,6 +92,8 @@ const next_clear_step = (
 			dirs.splice(dirs.indexOf(rt));
 		}
 	});
+
+	console.log('DIRS AFTER SPLICE: ', dirs);
 
 	return dirs.length > 0 ? dirs[0].direction : PossibleMoves.LEFT; // all 4 ways (up, left, right, down) have walls
 };
