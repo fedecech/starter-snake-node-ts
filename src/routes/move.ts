@@ -3,7 +3,7 @@ import { Coordinates } from '../interfaces/gameData';
 import { Router, Request, Response } from 'express';
 import { GameData } from '../interfaces/gameData';
 import { Converter } from '../core/Converter';
-import { next_move, next_path } from 'src/core/util';
+import { next_move, next_path } from '../core/util';
 
 const router = Router();
 
