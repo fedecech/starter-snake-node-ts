@@ -71,14 +71,16 @@ const next_clear_step = (
 	width: number,
 	height: number
 ) => {
-	const up = { x: head.x - 1, y: head.y, direction: PossibleMoves.UP };
-	const dw = { x: head.x + 1, y: head.y, direction: PossibleMoves.DOWN };
-	const lt = { x: head.x, y: head.y - 1, direction: PossibleMoves.LEFT };
-	const rt = { x: head.x - 1, y: head.y + 1, direction: PossibleMoves.RIGHT };
+	const up = { x: head.x, y: head.y - 1, direction: PossibleMoves.UP };
+	const dw = { x: head.x, y: head.y + 1, direction: PossibleMoves.DOWN };
+	const lt = { x: head.x - 1, y: head.y, direction: PossibleMoves.LEFT };
+	const rt = { x: head.x + 1, y: head.y, direction: PossibleMoves.RIGHT };
 	let dirs = [up, dw, lt, rt];
 
 	// remove directions were there are external walls
-	dirs = dirs.filter((d) => d.x < width && d.y < height);
+	dirs = dirs.filter(
+		(d) => (d.x < width || d.x >= 0) && (d.y < height || d.y >= 0)
+	);
 	console.log('DIRS: ', dirs);
 
 	walls.forEach((w) => {
