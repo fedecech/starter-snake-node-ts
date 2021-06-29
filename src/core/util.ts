@@ -1,6 +1,6 @@
 import { AStarFinder } from '../finders/astar-finder';
 import { Coordinates } from '../interfaces/gameData';
-import { PossibleMoves } from '../routes/move';
+// import { PossibleMoves } from '../routes/move';
 import { Node } from './Node';
 
 /**
