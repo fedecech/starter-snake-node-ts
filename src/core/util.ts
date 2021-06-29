@@ -82,6 +82,7 @@ const next_clear_step = (
 		(d) => (d.x < width || d.x >= 0) && (d.y < height || d.y >= 0)
 	);
 	console.log('DIRS: ', dirs);
+	console.log('WALLS: ', walls);
 
 	walls.forEach((w) => {
 		if (w.x === up.x && w.y === up.y) {
